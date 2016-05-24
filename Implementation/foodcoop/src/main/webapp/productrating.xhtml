@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/cooptemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Rate #{productRatingController.newPr.product.name}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            
+            <h2>Rate #{productRatingController.newPr.product.name}</h2> <br />
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:graphicImage value="/image?id=#{productRatingController.newPr.product.id}" height="50px" width="50px" />
+                    <h:outputLabel value="" for="dummy" />
+                    <h:outputLabel value="Average Rating" for="averagerating"/>
+                    <h:outputLabel id ="averagerating" value="#{productRatingController.newPr.product.avgRating}"/>
+                    <h:outputLabel value="Rating" for="rating" />
+                    <h:inputText id="rating" value="#{productRatingController.newPr.rating}" title="Rating" required="true" requiredMessage="Rating cannot be empty">
+                        <f:validateLongRange minimum="1" maximum="5"/>
+                    </h:inputText>
+                </h:panelGrid>
+                
+                <ul class="commandButtons">
+                    <li><h:commandLink action="#{productRatingController.create}" value="Save" /></li>
+                </ul>              
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition template="/cooptemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Start Shopping Session"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <f:event type="preRenderView" listener="#{shoppingSessionController.clearFields}" />
+            <h:messages style="color:red" />
+            <h:outputText value="Please type the username of the member on behalf of which you will do shopping. If you leave the username blank, an anonymous shopping session will be started." style="font-weight:bold" />
+            <br/>
+            <br/>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Username" for="username" />
+                    <h:inputText id="username" value="#{shoppingSessionController.newUsername}" title="A"/>
+                </h:panelGrid>
+                <ul class="commandButtons">
+                    <li><h:commandLink action="#{shoppingSessionController.create}" value="Start shopping session" /></li>
+                    <li><h:commandLink action="/welcome.xhtml" value="Cancel" immediate="true" /></li>
+                </ul>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

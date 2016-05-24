@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/cooptemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Announcements"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            
+            <h2>Create new Announcement</h2> <br />
+            <h:messages style="color:red" />
+            <h:form id="formnewannouncement">
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Text" for="name" />
+                    <h:inputText id="name" value="#{announcementController.text}" title="Text" required="true" requiredMessage="Text cannot be empty"/>
+                    <h:outputLabel value="Date of Invalidity (dd-MM-yyyy)" for="dateOfInvalidity" />
+                    <h:inputText id="dateOfInvalidity" value="#{announcementController.dateOfInvalidity}" title="Date of Invalidity" required="true" requiredMessage="Date of invalidity should be in dd-MM-yyyy format" >
+                       <f:convertDateTime pattern="dd-MM-yyyy"/>
+                    </h:inputText>
+                </h:panelGrid>
+                
+                <ul class="commandButtons">
+                    <li><h:commandLink action="#{announcementController.create}" value="Save" /></li>
+                </ul>              
+            </h:form>
+            <br/>
+            <h2>Existing Announcements</h2> <br />
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup>
+                    <h:dataTable value="#{announcementBean.findAllAnnouncements()}" var="ann" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" >
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Id"/>
+                            </f:facet>
+                            <h:outputText value="#{ann.id}"/>                           
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Text"/>
+                            </f:facet>
+                            <h:outputText value="#{ann.text}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Date of Creation"/>
+                            </f:facet>
+                            <h:outputText value="#{ann.dateOfCreation}">
+                                <f:convertDateTime pattern="dd.MM.yyyy" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Date of Invalidity"/>
+                            </f:facet>
+                            <h:outputText value="#{ann.dateOfInvalidity}">
+                                <f:convertDateTime pattern="dd.MM.yyyy" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value=""/>
+                            </f:facet>
+                            <h:commandLink action="#{announcementBean.delete(ann.id)}" value="Delete"/>           
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

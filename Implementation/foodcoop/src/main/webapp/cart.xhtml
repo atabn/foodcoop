@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    template="/cooptemplate.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="Shopping Cart"></h:outputText>
+    </ui:define>
+    <ui:define name="body">
+        <h:form styleClass="jsfcrud_list_form">
+            
+            <h2>Shopping Cart</h2> <br />
+            <h:messages style="color:red" />
+            <h:dataTable value="#{shoppingSessionController.cart}"  rowClasses="firstRow,secondRow" var="item" border="0" cellpadding="0" cellspacing="0" rules="all" styleClass="productsAhmet">                    
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Picture"/>
+                        </f:facet>
+                        <h:graphicImage value="/image?id=#{item.product.id}" height="50px" width="50px" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Cart Id"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cartId}"/><br />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Name"/>
+                        </f:facet>
+                        <h:outputText value="#{item.product.name}"/><br />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Unit Price"/>
+                        </f:facet>
+                        <h:outputText value="#{item.product.price} / #{item.product.scale}"/><br />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Quantity"/>
+                        </f:facet>
+                        <h:outputText value="#{item.quantity}"/><br />
+                    </h:column>                  
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Total Price"/>
+                        </f:facet>
+                        <h:outputText value="#{item.quantity * item.product.price}">
+                            <f:convertNumber maxFractionDigits="2" />
+                        </h:outputText>
+                        <h:outputText value=" TL"/>                        
+                        <br />
+                    </h:column>    
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Action"/>
+                        </f:facet>
+                        <h:commandLink action="#{shoppingSessionController.remove(item.cartId)}" value="Remove" />
+                    </h:column>  
+            </h:dataTable>
+            <br/>
+            <h:outputText value="Total price: "/>   
+            <h:outputText value="#{shoppingSessionController.getTotalPrice()}">
+                <f:convertNumber maxFractionDigits="2" />
+            </h:outputText>
+            <h:outputText value=" TL"/>   
+            <ul class="commandButtons">
+                <li><h:commandLink action="/products.xhtml" value="Continue shopping" immediate="true" /></li>
+                <li><h:commandLink action="#{shoppingSessionController.commit}" value="Commit" /></li>
+                <li><h:commandLink action="#{shoppingSessionController.abort}" value="Abort" /></li>
+            </ul>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    template="/cooptemplate.xhtml"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:define name="title">
+        <h:outputText value="Products"></h:outputText>
+    </ui:define>
+    <ui:define name="body">
+        <h:form styleClass="jsfcrud_list_form">
+            
+            <h:outputLabel for="categorycheckbox" value="Category Filter" rendered="#{not empty categoryBean.findAllCategories()}" />
+            <h:selectManyCheckbox id="categorycheckbox" value="#{productController.categories}" rendered="#{not empty categoryBean.findAllCategories()}" >
+                <f:selectItems value="#{productController.categoryItems}"/>
+            </h:selectManyCheckbox>
+            <br/>
+            <h:commandButton value="Apply Filter" action="#{productController.applyCategoryFilter}" rendered="#{not empty categoryBean.findAllCategories()}" />
+            <br />
+            <h2>Products</h2> <br />
+            <h:dataTable value="#{productController.findProductsOfCategories()}"  rowClasses="firstRow,secondRow" var="item" border="0" cellpadding="0" cellspacing="0" rules="all" styleClass="productsAhmet">                    
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Picture"/>
+                        </f:facet>
+                        <h:graphicImage value="/image?id=#{item.id}" height="50px" width="50px" />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Name"/>
+                        </f:facet>
+                        <h:outputText value="#{item.name}"/><br />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Producer"/>
+                        </f:facet>
+                        <h:outputText value="#{item.producer.name}"/><br />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Category"/>
+                        </f:facet>
+                        <h:outputText value="#{item.category.name}"/><br />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Scale"/>
+                        </f:facet>
+                        <h:outputText value="#{item.price} TL / #{item.scale}"/><br />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Stock Level"/>
+                        </f:facet>
+                        <h:outputText value="#{item.stockLevel} #{item.scale}"/><br />
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="Rating"/>
+                        </f:facet>
+                        <h:outputText value="#{item.avgRating}" rendered="#{item.numRatings > 0}">
+                            <f:convertNumber maxFractionDigits="1" />
+                        </h:outputText>
+                        <h:outputText value=" / 5, " rendered="#{item.numRatings > 0}" >
+                        </h:outputText>
+                        <h:outputText value="#{item.numRatings} votes" rendered="#{item.numRatings > 0}" />
+                        <h:outputText value="None yet" rendered="#{item.numRatings == 0}" />
+                        <br />
+                        <h:commandLink action="#{productRatingController.prepare(memberController.memberId, item.id)}" value="Rate" rendered="#{memberController.logged == true and productRatingController.isRated(memberController.memberId, item.id) == false}"/>
+                    </h:column>  
+                    <h:column rendered="#{memberController.admin == true or shoppingSessionController.active}">
+                        <f:facet name="header">
+                            <h:outputText value="Action"/>
+                        </f:facet>
+                        <h:commandLink action="#{shoppingSessionController.buy(item.id)}" value="Buy" rendered="#{shoppingSessionController.active == true}"/>
+                        <h:commandLink action="#{productBean.delete(item.id)}" value="Delete" rendered="#{memberController.admin == true}"/>
+                    </h:column>  
+                </h:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/cooptemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Volunteer Tasks"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form id="formnewvtask" rendered="#{memberController.admin}">
+                <h2>Create new Task</h2> <br />
+                <h:messages style="color:red"/>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Text" for="name" />
+                    <h:inputText id="name" value="#{volunteerTaskController.text}" title="Text" required="true" requiredMessage="Text cannot be empty"/>
+                    <h:outputLabel value="Location" for="location" />
+                    <h:inputText id="location" value="#{volunteerTaskController.location}" title="Text" required="true" requiredMessage="Location cannot be empty"/>
+                    <h:outputLabel value="Date of Task (dd-MM-yyyy)" for="dateOfInvalidity" />
+                    <h:inputText id="taskdate" value="#{volunteerTaskController.taskDate}" title="Date of Task" required="true" requiredMessage="Date of task should be in dd-MM-yyyy format" >
+                       <f:convertDateTime pattern="dd-MM-yyyy"/>
+                    </h:inputText>
+                </h:panelGrid>
+                
+                <ul class="commandButtons">
+                    <li><h:commandLink action="#{volunteerTaskController.create}" value="Save" /></li>
+                </ul>              
+            </h:form>
+            <br/>
+            <h2>Existing Tasks</h2> <br />
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup>
+                    <h:dataTable value="#{volunteerTaskBean.findAllVolunteerTasks()}" binding="#{table}" var="vt" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" >
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Index"/>
+                            </f:facet>
+                            <h:outputText value="#{table.rowIndex + 1}"/>                      
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Text"/>
+                            </f:facet>
+                            <h:outputText value="#{vt.text}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Location"/>
+                            </f:facet>
+                            <h:outputText value="#{vt.location}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Date of Task"/>
+                            </f:facet>
+                            <h:outputText value="#{vt.taskDate}">
+                                <f:convertDateTime pattern="dd.MM.yyyy" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column rendered="#{memberController.admin}">
+                            <f:facet name="header">
+                                <h:outputText value=""/>
+                            </f:facet>
+                            <h:commandLink action="#{volunteerTaskBean.delete(vt.id)}" value="Delete"/>
+                        </h:column>
+                        <h:column rendered ="#{memberController.logged}">
+                            <f:facet name="header">
+                                <h:outputText value="Action"/>
+                            </f:facet>
+                            <h:commandLink rendered="#{volunteerTaskBean.isMember(vt.id, memberController.memberId) == true}" action="#{volunteerTaskBean.removeMember(vt.id, memberController.memberId)}" value="Remove" />
+                            <h:commandLink rendered="#{volunteerTaskBean.isMember(vt.id, memberController.memberId) == false}" action="#{volunteerTaskBean.addMember(vt.id, memberController.memberId)}" value="Apply" />
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
+
+

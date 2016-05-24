@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:util="http://java.sun.com/jsf/composite/util">
+
+    <h:form>
+        <br />
+        <div id="vertmenu">
+            <ul>
+
+                <li><h:commandLink action="/welcome.xhtml" value="Home" /></li>
+                <li><h:commandLink action="/products.xhtml" value="Products" /></li>
+                <li><h:commandLink action="/volunteertasks.xhtml" value="Volunteer Activities" /></li>
+                
+                <c:if test="#{memberController.salesman and shoppingSessionController.active == false}">
+                <li><h:commandLink action="/sellstart.xhtml" value="Sell Products"/></li>
+                </c:if>                
+
+                <c:if test="#{memberController.salesman and shoppingSessionController.active == true}">
+                <li><h:commandLink action="/cart.xhtml" value="Shopping Cart"/></li>
+                </c:if>  
+                
+                <c:if test="#{memberController.salesman}">
+                <li><h:commandLink action="/viewcategories.xhtml" value="Manage Categories" /></li>
+                <li><h:commandLink action="#{productController.prepareCreate}" value="Create Product" /></li>
+                <li><h:commandLink action="/createproducer.xhtml" value="Create Producer" /></li>
+                </c:if>
+                
+                <c:if test="#{memberController.admin}">
+                <li><h:commandLink action="/approvemembers.xhtml" value="Approve Members" /></li>
+                <li><h:commandLink action="/viewmembers.xhtml" value="Edit Members" /></li>
+                <li><h:commandLink action="/announcements.xhtml" value="Manage Announcements" /></li>
+                <li><h:commandLink action="/settings.xhtml" value="Settings" /></li>
+                </c:if>
+            </ul>
+        </div>
+        <br />
+    </h:form>
+</ui:composition>

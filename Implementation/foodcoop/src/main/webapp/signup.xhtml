@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:composition template="/cooptemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Sign Up"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:messages style="color:red" />
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="Firstname" for="firstname" />
+                    <h:inputText id="firstname" value="#{memberController.newMember.firstname}" title="A" required="true" requiredMessage="Firstname cannot be empty"/>
+                    <h:outputLabel value="Lastname" for="lastname" />
+                    <h:inputText id="lastname" value="#{memberController.newMember.lastname}" title="B" required="true" requiredMessage="Lastname cannot be empty"/>
+                    <h:outputLabel value="Email" for="email" />
+                    <h:inputText id="email" value="#{memberController.newMember.username}" title="C" required="true" requiredMessage="Email cannot be empty">
+                    </h:inputText>
+                    <h:outputLabel value="Address" for="address" />
+                    <h:inputText id="address" value="#{memberController.newMember.address}" title="D" required="true" requiredMessage="Address cannot be empty"/>
+                    <h:outputLabel value="Password" for="password" />
+                    <h:inputSecret id="password" value="#{memberController.newMember.password}" title="E" required="true" requiredMessage="Password cannot be empty"/>                    
+                    
+                </h:panelGrid>
+                <ul class="commandButtons">
+                    <li><h:commandLink action="#{memberController.create}" value="Save" /></li>
+                    <li><h:commandLink action="/welcome.xhtml" value="Cancel" immediate="true" /></li>
+                </ul>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

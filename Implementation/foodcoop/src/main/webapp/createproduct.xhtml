@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/cooptemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Create Product"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup layout="block" id="step1" rendered="#{productController.step == 1}">
+                <h:messages style="color:red" />
+                <h:outputText value="Step 1 - Add a new product" style="font-size:20px;"/> 
+                <h:form><br />
+                    <h:panelGrid columns="2">
+                        <h:outputLabel value="Name" for="name" />
+                        <h:inputText id="name" value="#{productController.current.name}" title="Name" required="true" requiredMessage="Name cannot be empty"/>
+                        <h:outputLabel value="Scale" for="scale" />
+                        <h:selectOneRadio id="scale" required="true" value="#{productController.current.scale}">
+                            <f:selectItem itemValue="kg" itemLabel="kg"/>
+                            <f:selectItem itemValue="piece" itemLabel="piece"/>
+                            <f:selectItem itemValue="liter" itemLabel="liter"/>
+                        </h:selectOneRadio>
+                        <h:outputLabel value="Price" for="price" />
+                        <h:inputText id="price" value="#{productController.current.price}" title="Price" required="true" requiredMessage="Price cannot be empty">
+                            <f:validateDoubleRange minimum="0.1"  />
+                        </h:inputText>                       
+                        <h:outputLabel value="Initial Stock Level" for="stocklevel" />
+                        <h:inputText id="stocklevel" value="#{productController.current.stockLevel}" title="Initial Stock Level" required="true" requiredMessage="Stock level cannot be empty"/>
+                        <h:outputLabel value="Producer" for="producer" />
+                        <h:selectOneMenu id="producer" value="#{productController.currentProducerStr}" required="true" requiredMessage="Producer cannot be empty" >
+                              <f:selectItems value="#{producerBean.findAllProducers()}"/>
+                        </h:selectOneMenu>
+                        <h:outputLabel value="Category" for="category" />
+                        <h:selectOneRadio id="category" value="#{productController.currentCategoryStr}" required="true" requiredMessage="Category cannot be empty" >
+                              <f:selectItems value="#{categoryBean.findAllCategories()}"/>
+                        </h:selectOneRadio>
+
+                    </h:panelGrid>
+
+                    <ul class="commandButtons">
+                        <li><h:commandLink action="#{productController.create}" value="Save" /></li>
+                    </ul>
+                        
+                </h:form>
+                
+            </h:panelGroup>
+            <h:panelGroup layout="block" id="step2" rendered="#{productController.step == 2}">
+                <h:messages style="color:red" />
+                <h:outputText value="Step 2 - Upload the product image" style="font-size:20px;"/>
+                
+                <h:form id="upForm" enctype="multipart/form-data">
+                    <h:panelGrid columns="2" rendered="#{productController.step == 2}">
+                        <h:outputLabel value="Select Product Picture" for="file" />
+                        <h:inputFile id="file" value="#{productController.filePart}"/>
+                        <h:commandButton value="Upload"
+                                         action="#{productController.upload}" onclick="return validateUpload()">
+                            <f:ajax execute="file" render="@all"/>
+                        </h:commandButton>
+                    </h:panelGrid>
+                </h:form>
+            </h:panelGroup>
+
+            <h:panelGroup layout="block" id="step3" rendered="#{productController.step == 3}">
+                <br />
+                <h:form>
+                    <h:commandButton action="#{productController.done}" value="Done!" />
+                </h:form>
+            </h:panelGroup>
+
+        </ui:define>
+    </ui:composition>
+
+</html>
+
+

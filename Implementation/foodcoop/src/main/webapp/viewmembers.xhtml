@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <ui:composition template="/cooptemplate.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Members"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup>
+                    <h:dataTable value="#{memberBean.findAllMembers(true)}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" >
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Id"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>                           
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Email"/>
+                            </f:facet>
+                            <h:outputText value="#{item.username}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Admin"/>
+                            </f:facet>
+                            <h:outputText value="#{item.admin}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="Salesman"/>
+                            </f:facet>
+                            <h:outputText value="#{item.salesman}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value=""/>
+                            </f:facet>
+                            <h:commandLink action="#{memberBean.approveMember(item.id, false)}" value="Freeze" rendered="#{memberController.coopMember.id != item.id}" />
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{memberBean.deleteMember(item.id)}" value="Delete" rendered="#{memberController.coopMember.id != item.id}" />
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{memberBean.makeMemberAdmin(item.id, false)}" value="Clear-Admin" rendered="#{item.admin == true and memberController.coopMember.id != item.id}" />
+                            <h:commandLink action="#{memberBean.makeMemberAdmin(item.id, true)}" value="Set-Admin" rendered="#{item.admin == false}" />                      
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{memberBean.makeMemberSalesman(item.id, false)}" value="Clear-Salesman" rendered="#{item.salesman == true and memberController.coopMember.id != item.id}" />
+                            <h:commandLink action="#{memberBean.makeMemberSalesman(item.id, true)}" value="Set-Salesman" rendered="#{item.salesman == false}" />                   
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
